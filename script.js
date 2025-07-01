@@ -1,4 +1,3 @@
-javascript
 let editingNoteId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
