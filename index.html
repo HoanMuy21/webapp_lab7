@@ -1,67 +1,39 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Web Service</title>
-  <link rel="stylesheet" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ứng Dụng Ghi Chú Đầy Đủ Chức Năng</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <h1>Item Manager</h1>
-    <div class="form-group">
-      <input type="text" id="itemInput" placeholder="Enter item name">
-      <button onclick="addItem()">Add Item</button>
+    <div class="container">
+        <h1>Ứng Dụng Ghi Chú</h1>
+        <div id="notification" class="notification"></div>
+        <div class="note-form">
+            <input type="text" id="noteTitle" placeholder="Tiêu đề ghi chú...">
+            <input type="text" id="noteContent" placeholder="Nội dung ghi chú...">
+            <select id="noteCategory">
+                <option value="Công việc">Công việc</option>
+                <option value="Cá nhân">Cá nhân</option>
+                <option value="Học tập">Học tập</option>
+                <option value="Khác">Khác</option>
+            </select>
+            <button onclick="addNote()">Thêm</button>
+        </div>
+        <div class="search-filter">
+            <input type="text" id="searchInput" placeholder="Tìm kiếm ghi chú..." oninput="searchNotes()">
+            <select id="filterCategory" onchange="filterNotes()">
+                <option value="">Tất cả danh mục</option>
+                <option value="Công việc">Công việc</option>
+                <option value="Cá nhân">Cá nhân</option>
+                <option value="Học tập">Học tập</option>
+                <option value="Khác">Khác</option>
+            </select>
+            <button class="delete-all" onclick="deleteAllNotes()">Xóa Tất Cả</button>
+        </div>
+        <ul class="note-list" id="noteList"></ul>
     </div>
-    <ul id="itemList"></ul>
-  </div>
-  <script>
-    async function fetchItems() {
-      const response = await fetch('/api/items');
-      const items = await response.json();
-      const itemList = document.getElementById('itemList');
-      itemList.innerHTML = '';
-      items.forEach(item => {
-        const li = document.createElement('li');
-        li.innerHTML = `
-          ${item.name}
-          <button onclick="updateItem(${item.id})">Update</button>
-          <button onclick="deleteItem(${item.id})">Delete</button>
-        `;
-        itemList.appendChild(li);
-      });
-    }
-
-    async function addItem() {
-      const name = document.getElementById('itemInput').value;
-      if (!name) return alert('Please enter an item name');
-      await fetch('/api/items', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
-      });
-      document.getElementById('itemInput').value = '';
-      fetchItems();
-    }
-
-    async function updateItem(id) {
-      const name = prompt('Enter new item name:');
-      if (!name) return;
-      await fetch(`/api/items/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name })
-      });
-      fetchItems();
-    }
-
-    async function deleteItem(id) {
-      await fetch(`/api/items/${id}`, { method: 'DELETE' });
-      fetchItems();
-    }
-
-    // Initial fetch
-    fetchItems();
-  </script>
+    <script src="script.js"></script>
 </body>
 </html>
