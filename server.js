@@ -1,7 +1,8 @@
 const express = require('express');
 const cors = require('cors');
+const os = require('os'); // Thêm module os để lấy hostname
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000; // Sử dụng process.env.PORT cho Render
 
 app.use(cors());
 app.use(express.json());
@@ -9,6 +10,12 @@ app.use(express.json());
 // Mảng tạm thời để lưu ghi chú (thay cho database)
 let notes = [];
 let idCounter = 1;
+
+// Endpoint để xác minh load balancing
+app.get('/', (req, res) => {
+    const hostname = os.hostname();
+    res.send(`Hello from ${hostname} - Note App Server`);
+});
 
 // Lấy tất cả ghi chú (hỗ trợ tìm kiếm và lọc)
 app.get('/api/notes', (req, res) => {
@@ -43,7 +50,7 @@ app.post('/api/notes', (req, res) => {
     if (!title || !content) {
         return res.status(400).json({ error: 'Tiêu đề và nội dung là bắt buộc' });
     }
-    const note = { id: (idCounter++).toString(), title, content, category, date };
+    const note = { id: (idCounter++).toString(), title, content, server: os.hostname(), category, date }; // Thêm server hostname vào note
     notes.push(note);
     res.status(201).json(note);
 });
@@ -60,6 +67,7 @@ app.put('/api/notes/:id', (req, res) => {
     note.content = content;
     note.category = category;
     note.date = date;
+    note.server = os.hostname(); // Cập nhật server hostname
     res.json(note);
 });
 
@@ -78,6 +86,9 @@ app.delete('/api/notes', (req, res) => {
     res.status(204).send();
 });
 
+// Phục vụ file tĩnh (index.html, styles.css, script.js)
+app.use(express.static(__dirname));
+
 app.listen(port, () => {
-    console.log(`Server đang chạy tại http://localhost:${port}`);
+    console.log(`Server đang chạy tại http://localhost:${port} trên ${os.hostname()}`);
 });
