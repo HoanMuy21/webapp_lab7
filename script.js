@@ -1,3 +1,4 @@
+javascript
 let editingNoteId = null;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -6,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function showNotification(message, type) {
     const notification = document.getElementById('notification');
-    notification.textContent message;
+    notification.textContent = message;
     notification.className = `notification ${type}`;
     notification.style.display = 'block';
     setTimeout(() => {
@@ -70,7 +71,7 @@ async function loadNotes() {
             li.innerHTML = `
                 <h3>${note.title}</h3>
                 <p>${note.content}</p>
-                <small>Danh mục: ${note.category} | Ngày: ${note.date}</small>
+                <small>Danh mục: ${note.category} | Ngày: ${note.date} | Server: ${note.server}</small>
                 <div class="note-actions">
                     <button onclick="editNote('${note.id}')">Sửa</button>
                     <button onclick="deleteNote('${note.id}')">Xóa</button>
