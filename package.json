@@ -1,13 +1,13 @@
 {
-  "name": "simple-web-service",
-  "version": "1.0.0",
-  "description": "A simple RESTful web service with Node.js and Express",
-  "main": "server.js",
-  "scripts": {
-    "start": "node server.js"
-  },
-  "dependencies": {
-    "express": "^4.18.2",
-    "cors": "^2.8.5"
-  }
+    "name": "note-app",
+    "version": "1.0.0",
+    "description": "Ứng dụng ghi chú với backend Express.js",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js"
+    },
+    "dependencies": {
+        "express": "^4.18.2",
+        "cors": "^2.8.5"
+    }
 }
